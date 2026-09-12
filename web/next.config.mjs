@@ -4,6 +4,11 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // Hides the floating dev tools badge. Development only either way - it is
+  // never emitted in a production build - so this is purely about keeping the
+  // local preview clean.
+  devIndicators: false,
+
   images: {
     // AVIF first, WebP second, original as the last resort.
     formats: ['image/avif', 'image/webp'],
