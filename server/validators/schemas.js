@@ -62,18 +62,37 @@ const productFields = {
     .regex(/^[a-z0-9-]+$/, 'Slug may contain lowercase letters, numbers and hyphens only')
     .max(120)
     .optional(),
-  description: z.string().trim().max(4000).optional().default(''),
-  shortDescription: z.string().trim().max(200).optional().default(''),
+  description: z.string().trim().max(4000),
+  shortDescription: z.string().trim().max(200),
   category: objectId,
   image: imageInput,
   price: z.coerce.number().min(0, 'Price cannot be negative'),
   offerPrice: z.coerce.number().min(0).nullable().optional(),
-  unit: z.string().trim().max(40).optional().default(''),
-  featured: z.boolean().optional().default(false),
-  active: z.boolean().optional().default(true),
-  inStock: z.boolean().optional().default(true),
-  keywords: z.array(z.string().trim().max(60)).max(30).optional().default([]),
+  unit: z.string().trim().max(40),
+  featured: z.boolean(),
+  active: z.boolean(),
+  inStock: z.boolean(),
+  keywords: z.array(z.string().trim().max(60)).max(30),
   popularity: z.coerce.number().int().min(0).optional(),
+};
+
+/**
+ * Defaults for the fields a create may omit.
+ *
+ * Held apart from the field definitions above because `.partial()` makes keys
+ * optional but does NOT drop `.default()`. With defaults on the shared fields,
+ * `{ name }` parsed into a complete object and the update's $set wrote every
+ * one of them - blanking descriptions, units and keywords the caller never
+ * mentioned, and silently un-featuring products.
+ */
+const productCreateDefaults = {
+  description: productFields.description.optional().default(''),
+  shortDescription: productFields.shortDescription.optional().default(''),
+  unit: productFields.unit.optional().default(''),
+  featured: productFields.featured.optional().default(false),
+  active: productFields.active.optional().default(true),
+  inStock: productFields.inStock.optional().default(true),
+  keywords: productFields.keywords.optional().default([]),
 };
 
 /**
@@ -96,7 +115,7 @@ const offerPriceRefinement = (data, ctx) => {
 };
 
 export const createProductBody = z
-  .object(productFields)
+  .object({ ...productFields, ...productCreateDefaults })
   .strict()
   .superRefine(offerPriceRefinement);
 
@@ -117,14 +136,24 @@ const categoryFields = {
     .regex(/^[a-z0-9-]+$/, 'Slug may contain lowercase letters, numbers and hyphens only')
     .max(120)
     .optional(),
-  description: z.string().trim().max(1000).optional().default(''),
+  description: z.string().trim().max(1000),
   image: imageInput,
-  displayOrder: z.coerce.number().int().optional().default(0),
-  active: z.boolean().optional().default(true),
-  keywords: z.array(z.string().trim().max(60)).max(30).optional().default([]),
+  displayOrder: z.coerce.number().int(),
+  active: z.boolean(),
+  keywords: z.array(z.string().trim().max(60)).max(30),
 };
 
-export const createCategoryBody = z.object(categoryFields).strict();
+/** Same split as products - see productCreateDefaults. */
+const categoryCreateDefaults = {
+  description: categoryFields.description.optional().default(''),
+  displayOrder: categoryFields.displayOrder.optional().default(0),
+  active: categoryFields.active.optional().default(true),
+  keywords: categoryFields.keywords.optional().default([]),
+};
+
+export const createCategoryBody = z
+  .object({ ...categoryFields, ...categoryCreateDefaults })
+  .strict();
 
 export const updateCategoryBody = z
   .object(categoryFields)
