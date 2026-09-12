@@ -1,6 +1,7 @@
 import * as productService from '../services/productService.js';
 import { destroyImage } from '../services/cloudinaryService.js';
 import { revalidateStorefront } from '../services/revalidateService.js';
+import { streamCatalogueePdf } from '../services/catalogueePdfService.js';
 
 /** Cache headers for public catalogue reads, served through any CDN in front. */
 function publicCache(res, seconds = 300) {
@@ -63,6 +64,24 @@ export async function getProductSlugs(_req, res) {
   const slugs = await productService.listProductSlugs();
   publicCache(res, 900);
   res.json({ success: true, slugs });
+}
+
+/**
+ * GET /api/products/export/pdf - admin only.
+ *
+ * Streamed rather than buffered: the document is written straight to the
+ * socket as it is laid out, so memory does not grow with the catalogue.
+ */
+export async function exportProductsPdf(req, res) {
+  const includeInactive = req.query.includeInactive === 'true';
+  const date = new Date().toISOString().slice(0, 10);
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="price-list-${date}.pdf"`);
+  // A price list is stale the moment an admin edits anything.
+  res.setHeader('Cache-Control', 'no-store');
+
+  await streamCatalogueePdf(res, { includeInactive });
 }
 
 /** POST /api/products */

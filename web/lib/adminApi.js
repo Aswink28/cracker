@@ -109,6 +109,56 @@ export async function deleteProduct(id) {
   await client.delete(`/products/${id}`);
 }
 
+/**
+ * Download the price list.
+ *
+ * Fetched through the axios client rather than pointed at with a plain link,
+ * because the endpoint is admin-only and a browser navigation would not carry
+ * the Authorization header - it would just render a 401. The blob is saved via
+ * a temporary object URL, and the filename is taken from the response so the
+ * server stays the one deciding it.
+ */
+export async function downloadPriceListPdf({ includeInactive = false } = {}) {
+  let data;
+  let headers;
+
+  try {
+    ({ data, headers } = await client.get('/products/export/pdf', {
+      params: includeInactive ? { includeInactive: true } : undefined,
+      responseType: 'blob',
+    }));
+  } catch (error) {
+    // responseType 'blob' applies to error bodies too, so the server's JSON
+    // message arrives as a Blob and errorMessage would see nothing useful.
+    // Re-reading it as text puts the real reason back on the error.
+    const body = error?.response?.data;
+    if (body instanceof Blob) {
+      try {
+        error.response.data = JSON.parse(await body.text());
+      } catch {
+        // Not JSON - leave the original error for the caller's fallback.
+      }
+    }
+    throw error;
+  }
+
+  const match = /filename="([^"]+)"/.exec(headers['content-disposition'] ?? '');
+  const filename = match?.[1] ?? 'price-list.pdf';
+
+  const url = window.URL.createObjectURL(data);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  // Revoked on the next tick: releasing it synchronously can cancel the
+  // download in some browsers before it has started reading the blob.
+  setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+
+  return filename;
+}
+
 // --- Categories -----------------------------------------------------------
 
 export async function listAdminCategories() {

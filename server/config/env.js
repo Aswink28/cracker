@@ -20,6 +20,10 @@ const schema = z.object({
   // Comma-separated list of origins allowed to call this API.
   FRONTEND_URL: z.string().min(1).default('http://localhost:3000'),
 
+  // Used on generated documents such as the price-list PDF. The storefront
+  // keeps its own NEXT_PUBLIC_STORE_NAME; set both to the same value.
+  STORE_NAME: z.string().default('Crackers Store'),
+
   // Cloudinary is optional at boot so the API still runs for read-only work
   // without credentials; uploads return a clear 503 instead of crashing.
   CLOUDINARY_CLOUD_NAME: z.string().optional(),

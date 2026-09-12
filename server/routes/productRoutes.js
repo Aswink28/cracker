@@ -17,6 +17,8 @@ const router = Router();
 // segments are not swallowed by the id parameter.
 router.get('/', attachAdmin, validate({ query: productListQuery }), controller.getProducts);
 router.get('/slugs', controller.getProductSlugs);
+// Also ahead of `/:id`, for the same reason.
+router.get('/export/pdf', requireAdmin, controller.exportProductsPdf);
 router.get('/slug/:slug', validate({ params: slugParam }), controller.getProductBySlug);
 router.get('/:id', validate({ params: idParam }), controller.getProductById);
 

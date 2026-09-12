@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { Plus, Pencil, Trash2, Loader2, Search, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Search, Star, FileDown } from 'lucide-react';
 import {
   listAdminProducts,
   deleteProduct,
   listAdminCategories,
+  downloadPriceListPdf,
   errorMessage,
 } from '@/lib/adminApi';
 import { formatPrice, effectivePrice, cn } from '@/lib/format';
@@ -20,6 +21,7 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [deletingId, setDeletingId] = useState(null);
+  const [downloading, setDownloading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -47,6 +49,23 @@ export default function AdminProductsPage() {
   useEffect(() => {
     listAdminCategories().then(setCategories).catch(() => setCategories([]));
   }, []);
+
+  /**
+   * The PDF always covers the whole catalogue, not the current filters - it is
+   * a price list to hand out, and one silently narrowed by a search box left
+   * filled in would be worse than useless.
+   */
+  async function handleDownloadPdf() {
+    setDownloading(true);
+    setError('');
+    try {
+      await downloadPriceListPdf();
+    } catch (err) {
+      setError(errorMessage(err, 'Could not generate the price list'));
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   async function handleDelete(product) {
     // Deleting a product is irreversible and removes its image, so it always
@@ -76,10 +95,26 @@ export default function AdminProductsPage() {
           <p className="text-sm text-ink-500">{total} total</p>
         </div>
 
-        <Link href="/admin/products/new" className="btn-primary">
-          <Plus className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
-          Add product
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={downloading}
+            className="btn-secondary"
+          >
+            {downloading ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <FileDown className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+            )}
+            {downloading ? 'Preparing...' : 'Download PDF'}
+          </button>
+
+          <Link href="/admin/products/new" className="btn-primary">
+            <Plus className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
+            Add product
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
