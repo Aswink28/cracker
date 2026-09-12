@@ -4,6 +4,7 @@ node_modules/
 .pnp.js
 
 # Environment - never commit real secrets
+DEPLOY-SECRETS.txt
 .env
 .env.local
 .env.*.local
