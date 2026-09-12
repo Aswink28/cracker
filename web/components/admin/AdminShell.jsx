@@ -3,7 +3,16 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, Tags, LogOut, Loader2, Store, ShieldCheck } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Package,
+  Tags,
+  Megaphone,
+  LogOut,
+  Loader2,
+  Store,
+  ShieldCheck,
+} from 'lucide-react';
 import { fetchMe, login as apiLogin, logout as apiLogout, getToken, errorMessage } from '@/lib/adminApi';
 import { store } from '@/lib/config';
 import { cn } from '@/lib/format';
@@ -20,6 +29,7 @@ const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/categories', label: 'Categories', icon: Tags },
+  { href: '/admin/announcements', label: 'Offers strip', icon: Megaphone },
 ];
 
 /**

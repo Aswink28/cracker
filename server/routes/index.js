@@ -5,6 +5,7 @@ import categoryRoutes from './categoryRoutes.js';
 import authRoutes from './authRoutes.js';
 import orderEnquiryRoutes from './orderEnquiryRoutes.js';
 import uploadRoutes from './uploadRoutes.js';
+import announcementRoutes from './announcementRoutes.js';
 
 const router = Router();
 
@@ -29,5 +30,6 @@ router.use('/categories', categoryRoutes);
 router.use('/auth', authRoutes);
 router.use('/order-enquiries', orderEnquiryRoutes);
 router.use('/uploads', uploadRoutes);
+router.use('/announcements', announcementRoutes);
 
 export default router;

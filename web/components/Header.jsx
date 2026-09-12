@@ -3,9 +3,9 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingCart, Phone, Sparkles } from 'lucide-react';
+import { Menu, X, ShoppingCart, Phone, Sparkles, MessageCircle } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
-import { store, has } from '@/lib/config';
+import { store, has, media } from '@/lib/config';
 import { cn } from '@/lib/format';
 import SearchBar from './SearchBar';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -55,9 +55,22 @@ export default function Header({ categories = [] }) {
         <div className="flex h-16 items-center justify-between gap-3">
           {/* Logo + store name */}
           <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-700 text-white">
-              <Sparkles className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
-            </span>
+            {/* The wordmark beside it already names the shop, so the mark is
+                decorative and carries an empty alt rather than repeating it. */}
+            {media.logo ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={media.logo}
+                alt=""
+                width={44}
+                height={44}
+                className="h-11 w-11 shrink-0 object-contain"
+              />
+            ) : (
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-700 text-white">
+                <Sparkles className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+              </span>
+            )}
             <span className="flex flex-col leading-none">
               <span className="text-base font-bold text-ink-950 sm:text-lg">
                 {store.name}
@@ -99,6 +112,21 @@ export default function Header({ categories = [] }) {
 
           <div className="flex shrink-0 items-center gap-1">
             <ThemeSwitcher />
+
+            {has.whatsapp && (
+              <a
+                href={`https://wa.me/${store.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                // WhatsApp green rather than a theme token: the colour is part
+                // of the brand customers recognise, and it stays constant
+                // across all three site themes.
+                className="hidden h-11 w-11 items-center justify-center rounded-lg text-[#25D366] hover:bg-ink-100 sm:flex"
+                aria-label={`Message ${store.name} on WhatsApp`}
+              >
+                <MessageCircle className="h-5 w-5" strokeWidth={2} />
+              </a>
+            )}
 
             {has.phone && (
               <a

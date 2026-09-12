@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import ProductImage from './ProductImage';
 import AddToCartControl from './AddToCartControl';
+import WishlistButton from './WishlistButton';
 import { formatPrice, effectivePrice, discountPercent, cn } from '@/lib/format';
 
 /**
@@ -45,6 +46,9 @@ export default function ProductCard({ product, priority = false, className }) {
             {discount}% OFF
           </span>
         )}
+
+        {/* Above the stretched title link, so the heart stays clickable. */}
+        <WishlistButton product={product} className="absolute right-2 top-2 z-10 shadow-sm" />
 
         {!product.inStock && (
           <span

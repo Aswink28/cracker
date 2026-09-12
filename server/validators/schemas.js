@@ -134,6 +134,55 @@ export const updateCategoryBody = z
     message: 'Provide at least one field to update',
   });
 
+/**
+ * Icon names must match the storefront's icon map. Keeping this an enum rather
+ * than a free string means an admin cannot save a name that renders nothing.
+ */
+const announcementFields = {
+  text: z.string().trim().min(2, 'Enter the message to display').max(160),
+  icon: z.enum(['megaphone', 'tag', 'sparkles', 'gift', 'truck', 'percent']),
+  displayOrder: z.coerce.number().int(),
+  active: z.boolean(),
+};
+
+/** Defaults belong to creation only - see updateAnnouncementBody. */
+export const createAnnouncementBody = z
+  .object({
+    text: announcementFields.text,
+    icon: announcementFields.icon.optional().default('megaphone'),
+    displayOrder: announcementFields.displayOrder.optional().default(0),
+    active: announcementFields.active.optional().default(true),
+  })
+  .strict();
+
+/**
+ * A partial update must contain only what the caller actually sent.
+ *
+ * `.partial()` makes keys optional but does NOT drop `.default()`, so defining
+ * the fields with defaults would make `{ text }` parse to a full object and
+ * $set would silently reset icon, order and visibility. The fields above are
+ * therefore declared without defaults, and creation adds them explicitly.
+ */
+export const updateAnnouncementBody = z
+  .object(announcementFields)
+  .partial()
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'Provide at least one field to update',
+  });
+
+/** Strip-level switches. No defaults here, for the reason above. */
+export const stripSettingsBody = z
+  .object({
+    enabled: z.boolean(),
+    showProductOffers: z.boolean(),
+  })
+  .partial()
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'Provide at least one setting to update',
+  });
+
 export const loginBody = z
   .object({
     email: z.string().trim().toLowerCase().email('Enter a valid email address'),

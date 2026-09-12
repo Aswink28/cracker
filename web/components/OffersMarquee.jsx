@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Tag, Sparkles, Truck, Gift, Pause, Play } from 'lucide-react';
 import { formatPrice, discountPercent, effectivePrice } from '@/lib/format';
+import { iconFor } from '@/lib/announcementIcons';
 
 const STATIC_NOTES = [
   { Icon: Truck, text: 'Pickup or delivery - your choice' },
@@ -20,11 +21,16 @@ const STATIC_NOTES = [
  * stylesheet rather than in an effect. Pressing the button overrides that
  * default for the visit.
  *
- * Real discounts only - it renders whatever products actually carry an offer,
- * and falls back to factual service notes if none do. Nothing here invents a
- * promotion.
+ * Content is admin-authored messages first, then whatever products actually
+ * carry a real discount, falling back to factual service notes if there is
+ * neither. Nothing here invents a promotion: every discount shown is computed
+ * from a product's own price, and every message was written in the panel.
  */
-export default function OffersMarquee({ products = [] }) {
+export default function OffersMarquee({
+  products = [],
+  announcements = [],
+  settings = { enabled: true, showProductOffers: true },
+}) {
   // null = follow the CSS/OS default. true/false = an explicit user choice.
   const [override, setOverride] = useState(null);
   const [systemPaused, setSystemPaused] = useState(false);
@@ -39,7 +45,7 @@ export default function OffersMarquee({ products = [] }) {
 
   const running = override ?? !systemPaused;
 
-  const offers = products
+  const offers = (settings.showProductOffers === false ? [] : products)
     .filter((p) => discountPercent(p) > 0)
     .slice(0, 10)
     .map((p) => ({
@@ -50,8 +56,24 @@ export default function OffersMarquee({ products = [] }) {
       was: formatPrice(p.price),
     }));
 
+  // Admin messages reuse the same shape as the static notes, so they render
+  // through the existing icon-and-text branch without special-casing.
+  const promos = announcements.slice(0, 10).map((a) => ({
+    key: `promo-${a.id}`,
+    note: { Icon: iconFor(a.icon), text: a.text },
+  }));
+
   const items =
-    offers.length > 0 ? offers : STATIC_NOTES.map((n, i) => ({ key: `note-${i}`, note: n }));
+    promos.length + offers.length > 0
+      ? [...promos, ...offers]
+      : STATIC_NOTES.map((n, i) => ({ key: `note-${i}`, note: n }));
+
+  // Switched off in the admin panel: no bar, and no service-note fallback
+  // either. This sits below the hooks so their order never changes between
+  // renders. Turning the strip off is the only way to remove it entirely -
+  // with it on, an empty strip falls back to the notes rather than rendering
+  // a bare coloured bar.
+  if (settings.enabled === false) return null;
 
   return (
     <div className="relative border-y border-brand-800/30 bg-brand-800">

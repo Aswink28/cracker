@@ -130,6 +130,37 @@ export async function deleteCategory(id) {
   await client.delete(`/categories/${id}`);
 }
 
+// --- Announcements (offers strip) -----------------------------------------
+
+export async function listAdminAnnouncements() {
+  const { data } = await client.get('/announcements');
+  return data.announcements;
+}
+
+export async function createAnnouncement(payload) {
+  const { data } = await client.post('/announcements', payload);
+  return data.announcement;
+}
+
+export async function updateAnnouncement(id, payload) {
+  const { data } = await client.put(`/announcements/${id}`, payload);
+  return data.announcement;
+}
+
+export async function deleteAnnouncement(id) {
+  await client.delete(`/announcements/${id}`);
+}
+
+export async function getStripSettings() {
+  const { data } = await client.get('/announcements/settings');
+  return data.settings;
+}
+
+export async function updateStripSettings(payload) {
+  const { data } = await client.put('/announcements/settings', payload);
+  return data.settings;
+}
+
 // --- Uploads --------------------------------------------------------------
 
 export async function uploadImage(file, folder = 'products') {

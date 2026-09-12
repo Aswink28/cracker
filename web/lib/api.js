@@ -106,6 +106,25 @@ export async function getCategoryBySlug(slug) {
   }
 }
 
+/**
+ * Admin-authored messages for the homepage offers strip.
+ * Tagged separately so publishing a promotion does not invalidate the whole
+ * product cache.
+ */
+export async function getAnnouncements() {
+  const data = await request('/announcements', { tags: ['announcements'] });
+  return data.announcements ?? [];
+}
+
+/**
+ * Whether the strip is shown at all, and whether it lists product discounts.
+ * Shares the announcements tag, so any strip change invalidates it in one ping.
+ */
+export async function getStripSettings() {
+  const data = await request('/announcements/settings', { tags: ['announcements'] });
+  return data.settings ?? { enabled: true, showProductOffers: true };
+}
+
 export async function getProductSlugs() {
   const data = await request('/products/slugs', { tags: ['products'] });
   return data.slugs ?? [];
@@ -120,9 +139,13 @@ export async function getProductSlugs() {
  * can still reach the shop.
  */
 export async function getHomepageData() {
-  const [featured, categories] = await Promise.allSettled([
+  const [featured, categories, announcements, stripSettings] = await Promise.allSettled([
+    // Stays at 8 even though the grid now shows a single row: this same list
+    // feeds the offers strip, which would lose entries if it were trimmed.
     getProducts({ featured: 'true', limit: 8, sort: 'popular' }),
     getCategories(),
+    getAnnouncements(),
+    getStripSettings(),
   ]);
 
   if (featured.status === 'rejected') {
@@ -131,10 +154,22 @@ export async function getHomepageData() {
   if (categories.status === 'rejected') {
     console.error('Homepage: categories unavailable -', categories.reason?.message);
   }
+  // A missing promo strip is cosmetic, so it is logged but never marks the page
+  // degraded - the catalogue itself is what matters.
+  if (announcements.status === 'rejected') {
+    console.error('Homepage: announcements unavailable -', announcements.reason?.message);
+  }
 
   return {
     featured: featured.status === 'fulfilled' ? (featured.value.products ?? []) : [],
     categories: categories.status === 'fulfilled' ? categories.value : [],
+    announcements: announcements.status === 'fulfilled' ? announcements.value : [],
+    // If the settings read fails the strip keeps its previous behaviour rather
+    // than vanishing, which would look like a broken deploy.
+    stripSettings:
+      stripSettings.status === 'fulfilled'
+        ? stripSettings.value
+        : { enabled: true, showProductOffers: true },
     degraded: featured.status === 'rejected' || categories.status === 'rejected',
   };
 }
