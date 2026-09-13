@@ -5,6 +5,8 @@ node_modules/
 
 # Environment - never commit real secrets
 DEPLOY-SECRETS.txt
+RENDER-ENV.txt
+VERCEL-ENV.txt
 .env
 .env.local
 .env.*.local
