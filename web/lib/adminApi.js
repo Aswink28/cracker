@@ -230,3 +230,8 @@ export async function listEnquiries(params = {}) {
   const { data } = await client.get('/order-enquiries', { params });
   return data;
 }
+
+export async function updateEnquiryStatus(id, status) {
+  const { data } = await client.patch(`/order-enquiries/${id}/status`, { status });
+  return data.enquiry;
+}

@@ -8,6 +8,7 @@ import {
   Package,
   Tags,
   Megaphone,
+  ClipboardList,
   LogOut,
   Loader2,
   Store,
@@ -27,6 +28,7 @@ export function useAdmin() {
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/admin/enquiries', label: 'Orders', icon: ClipboardList },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/categories', label: 'Categories', icon: Tags },
   { href: '/admin/announcements', label: 'Offers strip', icon: Megaphone },
