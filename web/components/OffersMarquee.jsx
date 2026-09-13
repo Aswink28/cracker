@@ -1,7 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { Tag, Sparkles, Truck, Gift, Pause, Play } from 'lucide-react';
+import { Tag, Sparkles, Truck, Gift } from 'lucide-react';
 import { formatPrice, discountPercent, effectivePrice } from '@/lib/format';
 import { iconFor } from '@/lib/announcementIcons';
 
@@ -14,12 +11,16 @@ const STATIC_NOTES = [
 /**
  * Continuously scrolling offers strip.
  *
- * Motion is user-controllable, which an auto-scrolling marquee needs in order
- * to satisfy WCAG 2.2.2 (Pause, Stop, Hide). The default comes from the
- * operating system: `prefers-reduced-motion: reduce` pauses it via CSS, with
- * no flash of movement first, because the initial state is decided in the
- * stylesheet rather than in an effect. Pressing the button overrides that
- * default for the visit.
+ * Scrolls on its own, with no visible control. Two ways to stop it remain:
+ * `prefers-reduced-motion: reduce` pauses it from the stylesheet, with no
+ * flash of movement first because the initial state is decided in CSS rather
+ * than in an effect, and hovering the strip pauses it so a passing offer can
+ * be read.
+ *
+ * Worth knowing: WCAG 2.2.2 (Pause, Stop, Hide) asks for a control that stops
+ * motion lasting more than five seconds. Hover is not one - it is unavailable
+ * on touch and to keyboard users - so this is a deliberate accepted gap, not
+ * an oversight. Restoring it means putting the toggle back.
  *
  * Content is admin-authored messages first, then whatever products actually
  * carry a real discount, falling back to factual service notes if there is
@@ -31,20 +32,6 @@ export default function OffersMarquee({
   announcements = [],
   settings = { enabled: true, showProductOffers: true },
 }) {
-  // null = follow the CSS/OS default. true/false = an explicit user choice.
-  const [override, setOverride] = useState(null);
-  const [systemPaused, setSystemPaused] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setSystemPaused(query.matches);
-    sync();
-    query.addEventListener('change', sync);
-    return () => query.removeEventListener('change', sync);
-  }, []);
-
-  const running = override ?? !systemPaused;
-
   const offers = (settings.showProductOffers === false ? [] : products)
     .filter((p) => discountPercent(p) > 0)
     .slice(0, 10)
@@ -85,11 +72,6 @@ export default function OffersMarquee({
             // announcing it would read every offer twice.
             aria-hidden={copy === 1}
             data-motion="marquee"
-            style={
-              // Only set inline once the visitor has chosen, so the stylesheet
-              // keeps control of the default.
-              override === null ? undefined : { animationPlayState: running ? 'running' : 'paused' }
-            }
             className="flex shrink-0 animate-marquee items-center gap-8 pr-8 group-hover:[animation-play-state:paused]"
           >
             {items.map((item) => (
@@ -125,21 +107,6 @@ export default function OffersMarquee({
         ))}
       </div>
 
-      {/* Sits above the strip rather than in it, so it never scrolls away. */}
-      <button
-        type="button"
-        onClick={() => setOverride(!running)}
-        aria-pressed={!running}
-        className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-brand-900/70 text-brand-50 backdrop-blur-sm transition-colors hover:bg-brand-950"
-        title={running ? 'Pause the offers strip' : 'Play the offers strip'}
-      >
-        {running ? (
-          <Pause className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden="true" />
-        ) : (
-          <Play className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden="true" />
-        )}
-        <span className="sr-only">{running ? 'Pause the offers strip' : 'Play the offers strip'}</span>
-      </button>
     </div>
   );
 }
