@@ -1,19 +1,29 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, Loader2, X } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, X, Upload } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   listAdminCategories,
   listAdminProducts,
   createCategory,
   updateCategory,
   deleteCategory,
+  uploadImage,
   errorMessage,
 } from '@/lib/adminApi';
 import { cn, formatPrice, effectivePrice } from '@/lib/format';
 
-const BLANK = { name: '', slug: '', description: '', displayOrder: 0, active: true, keywords: '' };
+const BLANK = {
+  name: '',
+  slug: '',
+  description: '',
+  displayOrder: 0,
+  active: true,
+  keywords: '',
+  image: null,
+};
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -22,6 +32,7 @@ export default function AdminCategoriesPage() {
   const [editing, setEditing] = useState(null); // null | 'new' | category object
   const [form, setForm] = useState(BLANK);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   // Products belonging to the category currently being edited.
   const [linked, setLinked] = useState({ loading: false, items: [], total: 0 });
@@ -56,6 +67,9 @@ export default function AdminCategoriesPage() {
       displayOrder: category.displayOrder ?? 0,
       active: category.active !== false,
       keywords: (category.keywords ?? []).join(', '),
+      // A category saved before it had an image carries an empty subdocument
+      // rather than null, which would render as a broken <Image src="">.
+      image: category.image?.url ? category.image : null,
     });
     setEditing(category);
 
@@ -66,6 +80,24 @@ export default function AdminCategoriesPage() {
     listAdminProducts({ category: category.slug, limit: 60, sort: 'name' })
       .then((data) => setLinked({ loading: false, items: data.products, total: data.total }))
       .catch(() => setLinked({ loading: false, items: [], total: 0 }));
+  }
+
+  async function handleImage(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError('');
+    try {
+      const image = await uploadImage(file, 'categories');
+      // Default the alt text to the category name so no image ships without one.
+      setForm((prev) => ({ ...prev, image: { ...image, alt: prev.image?.alt || prev.name } }));
+    } catch (err) {
+      setError(errorMessage(err, 'Image upload failed'));
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
   }
 
   async function handleSave(event) {
@@ -79,6 +111,7 @@ export default function AdminCategoriesPage() {
       displayOrder: Number(form.displayOrder) || 0,
       active: form.active,
       keywords: form.keywords.split(',').map((k) => k.trim()).filter(Boolean),
+      image: form.image,
     };
     if (form.slug.trim()) payload.slug = form.slug.trim();
 
@@ -229,6 +262,76 @@ export default function AdminCategoriesPage() {
                 placeholder="sparklers, phool jhadi"
                 className="input"
               />
+            </div>
+
+            {/* Image. Shown round because the storefront rail crops it to a
+                circle - a square preview would mislead about the framing. */}
+            <div className="sm:col-span-2">
+              <span className="mb-1.5 block text-sm font-medium text-ink-800">
+                Category image
+                <span className="ml-1 font-normal text-ink-400">
+                  Replaces the sparkle icon on the home page
+                </span>
+              </span>
+
+              {form.image?.url ? (
+                <div className="flex items-start gap-3">
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-ink-200">
+                    <Image
+                      src={form.image.url}
+                      alt={form.image.alt || form.name}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <label htmlFor="c-alt" className="mb-1.5 block text-xs font-medium text-ink-700">
+                      Image alt text
+                    </label>
+                    <input
+                      id="c-alt"
+                      value={form.image.alt ?? ''}
+                      onChange={(e) =>
+                        setForm((prev) => ({ ...prev, image: { ...prev.image, alt: e.target.value } }))
+                      }
+                      placeholder={`${form.name || 'Category'} crackers`}
+                      className="input text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setForm((prev) => ({ ...prev, image: null }))}
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-error-700 hover:underline"
+                    >
+                      <X className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden="true" />
+                      Remove image
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <label
+                  className={cn(
+                    'flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg',
+                    'border border-dashed border-ink-300 bg-white px-4 py-6 text-sm text-ink-600',
+                    'hover:border-brand-400 hover:bg-brand-50',
+                  )}
+                >
+                  {uploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Upload className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+                  )}
+                  {uploading ? 'Uploading...' : 'Upload an image (JPEG, PNG, WebP or AVIF, max 8 MB)'}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
+                    onChange={handleImage}
+                    disabled={uploading}
+                    className="sr-only"
+                  />
+                </label>
+              )}
             </div>
 
             <label htmlFor="c-active" className="flex cursor-pointer items-center gap-2">
