@@ -21,118 +21,274 @@ const RESET = process.argv.includes('--reset');
 
 const categories = [
   {
-    name: 'Sparklers',
+    name: "Sparklers",
     description:
-      'Hand-held sparklers in a range of lengths, from short 7 cm sticks for small children to 56 cm party sparklers. Available in plain, colour and crackling finishes.',
+      "Hand-held sparklers from 10 cm to 50 cm, in electric, colour, crackling, green and red finishes.",
     displayOrder: 1,
-    keywords: ['sparklers', 'phool jhadi', 'hand sparklers'],
+    keywords: ["sparklers", "crackers"],
   },
   {
-    name: 'Ground Chakkars',
+    name: "One Sound Crackers",
     description:
-      'Spinning ground chakkars that rotate in place and throw a wide circle of sparks. A festival staple that works well in open courtyards.',
+      "Single-report crackers sold by the packet, including lakshmi, bahubali and kuruvi.",
     displayOrder: 2,
-    keywords: ['ground chakkar', 'chakri', 'spinner'],
+    keywords: ["one sound crackers", "crackers"],
   },
   {
-    name: 'Flower Pots',
+    name: "Flower Pots",
     description:
-      'Also called anars. Flower pots sit on the ground and throw a steady fountain of sparks upward. Sold in standard, big and special varieties.',
+      "Ground fountains, from the standard big pot to colour koti and tri-colour.",
     displayOrder: 3,
-    keywords: ['flower pot', 'anar', 'fountain'],
+    keywords: ["flower pots", "crackers"],
   },
   {
-    name: 'Rockets',
+    name: "Ground Chakkar",
     description:
-      'Bottle rockets and whistling rockets that launch upward before bursting. To be used only in wide open spaces well away from buildings.',
+      "Spinning ground chakkars in big, special, deluxe and wire variants.",
     displayOrder: 4,
-    keywords: ['rockets', 'bottle rocket', 'whistling rocket'],
+    keywords: ["ground chakkar", "crackers"],
   },
   {
-    name: 'Fancy Crackers',
+    name: "Twinkling Star",
     description:
-      'Novelty and display items including colour pots, fancy fountains and multi-shot varieties for the main evening display.',
+      "Twinkling star items in two sizes.",
     displayOrder: 5,
-    keywords: ['fancy crackers', 'novelty', 'display'],
+    keywords: ["twinkling star", "crackers"],
   },
   {
-    name: 'Gift Boxes',
+    name: "Rockets",
     description:
-      'Ready-assembled assortment boxes covering a mix of sparklers, chakkars, flower pots and fancy items. Convenient for gifting.',
+      "Rockets with two-sound, three-sound and whistling effects.",
     displayOrder: 6,
-    keywords: ['gift box', 'assortment', 'festival gift'],
+    keywords: ["rockets", "crackers"],
   },
   {
-    name: 'Kids Collection',
+    name: "Bijili Crackers",
     description:
-      'Low-noise, low-intensity items chosen for younger children, to be used only under adult supervision.',
+      "Bijili crackers, sold by the packet.",
     displayOrder: 7,
-    keywords: ['kids crackers', 'children', 'low noise'],
+    keywords: ["bijili crackers", "crackers"],
   },
   {
-    name: 'Combo Packs',
+    name: "Colour Smokes",
     description:
-      'Larger value packs that bundle several categories together for a full evening of celebration.',
+      "Coloured smoke items including multi smoke and gold variants.",
     displayOrder: 8,
-    keywords: ['combo pack', 'value pack', 'family pack'],
+    keywords: ["colour smokes", "crackers"],
+  },
+  {
+    name: "Kids Special",
+    description:
+      "Lower-noise novelty items intended for children under adult supervision.",
+    displayOrder: 9,
+    keywords: ["kids special", "crackers"],
+  },
+  {
+    name: "Bomb Special",
+    description:
+      "Single-shot bomb items including digital, classic and hydro.",
+    displayOrder: 10,
+    keywords: ["bomb special", "crackers"],
+  },
+  {
+    name: "Fancy Novelties",
+    description:
+      "Multi-shot fancy items, from 7 shot up to 240 shot and welcome shots.",
+    displayOrder: 11,
+    keywords: ["fancy novelties", "crackers"],
+  },
+  {
+    name: "Paper Bomb",
+    description:
+      "Paper bombs by weight, plus avatar, rider and once more.",
+    displayOrder: 12,
+    keywords: ["paper bomb", "crackers"],
+  },
+  {
+    name: "Fountain",
+    description:
+      "Standing fountains including laddu, peacock, golden rain and ganga jamuna.",
+    displayOrder: 13,
+    keywords: ["fountain", "crackers"],
+  },
+  {
+    name: "Lars",
+    description:
+      "Lar strings in 1k, 2k, 5k and 10k counts.",
+    displayOrder: 14,
+    keywords: ["lars", "crackers"],
   },
 ];
 
 const products = [
   // Sparklers
-  { name: '7 CM Electric Sparklers', category: 'Sparklers', price: 40, offerPrice: 28, unit: 'Box of 10', shortDescription: 'Short 7 cm sparklers, well suited to younger children under supervision.', featured: false, keywords: ['sparklers', '7cm', 'electric sparklers'] },
-  { name: '10 CM Colour Sparklers', category: 'Sparklers', price: 65, offerPrice: 45, unit: 'Box of 10', shortDescription: 'Ten centimetre sparklers that burn with a colour-tinted flame.', keywords: ['colour sparklers', '10cm'] },
-  { name: '15 CM Crackling Sparklers', category: 'Sparklers', price: 110, offerPrice: 79, unit: 'Box of 10', shortDescription: 'Longer burn time with a crackling finish through the middle of the stick.', featured: true, keywords: ['crackling', '15cm sparklers'] },
-  { name: '30 CM Party Sparklers', category: 'Sparklers', price: 210, offerPrice: 155, unit: 'Box of 5', shortDescription: 'Thirty centimetre sparklers with an extended burn for group photographs.', keywords: ['party sparklers', '30cm'] },
-  { name: '56 CM Giant Sparklers', category: 'Sparklers', price: 420, offerPrice: 315, unit: 'Box of 5', shortDescription: 'The largest sparkler in the range, for open outdoor use only.', keywords: ['giant sparklers', '56cm'] },
+  { name: "10 cm Electric Sparklers", category: "Sparklers", price: 140, offerPrice: 28, unit: "1 box", keywords: ["10 cm electric sparklers", "sparklers"] },
+  { name: "10 cm Colour Sparklers", category: "Sparklers", price: 160, offerPrice: 32, unit: "1 Box", keywords: ["10 cm colour sparklers", "sparklers"] },
+  { name: "12 cm Electric Sparklers", category: "Sparklers", price: 185, offerPrice: 37, unit: "1 Box", keywords: ["12 cm electric sparklers", "sparklers"] },
+  { name: "12 cm Crackling Sparklers", category: "Sparklers", price: 205, offerPrice: 41, unit: "1 Box", keywords: ["12 cm crackling sparklers", "sparklers"] },
+  { name: "15 cm Electric Sparklers", category: "Sparklers", price: 350, offerPrice: 70, unit: "1 Box", keywords: ["15 cm electric sparklers", "sparklers"] },
+  { name: "15 cm Cracking Sparklers", category: "Sparklers", price: 375, offerPrice: 75, unit: "1 Box", keywords: ["15 cm cracking sparklers", "sparklers"] },
+  { name: "15 cm Green Sparklers", category: "Sparklers", price: 400, offerPrice: 80, unit: "1 Box", keywords: ["15 cm green sparklers", "sparklers"] },
+  { name: "15 cm Red Sparklers", category: "Sparklers", price: 550, offerPrice: 110, unit: "1 Box", keywords: ["15 cm red sparklers", "sparklers"] },
+  { name: "30 cm Electric Sparklers", category: "Sparklers", price: 350, offerPrice: 70, unit: "1 Box", keywords: ["30 cm electric sparklers", "sparklers"] },
+  { name: "30 cm Crackling Sparklers", category: "Sparklers", price: 375, offerPrice: 75, unit: "1 Box", keywords: ["30 cm crackling sparklers", "sparklers"] },
+  { name: "30 cm Green Sparklers", category: "Sparklers", price: 400, offerPrice: 80, unit: "1 Box", keywords: ["30 cm green sparklers", "sparklers"] },
+  { name: "30 cm Red Sparklers", category: "Sparklers", price: 550, offerPrice: 110, unit: "1 Box", keywords: ["30 cm red sparklers", "sparklers"] },
+  { name: "50 cm Electric Sparklers", category: "Sparklers", price: 1495, offerPrice: 299, unit: "1 Box", keywords: ["50 cm electric sparklers", "sparklers"] },
+  { name: "50 cm Crackling Sparklers", category: "Sparklers", price: 1685, offerPrice: 337, unit: "1 Box", keywords: ["50 cm crackling sparklers", "sparklers"] },
 
-  // Ground Chakkars
-  { name: 'Ground Chakkar Small', category: 'Ground Chakkars', price: 70, offerPrice: 52, unit: 'Pack of 10', shortDescription: 'Compact spinning chakkar with a tight spark circle.', keywords: ['ground chakkar', 'small chakri'] },
-  { name: 'Ground Chakkar Special', category: 'Ground Chakkars', price: 145, offerPrice: 99, unit: 'Pack of 10', shortDescription: 'Longer spin time and a wider spark circle than the small chakkar.', featured: true, keywords: ['ground chakkar special', 'chakri'] },
-  { name: 'Ground Chakkar Deluxe', category: 'Ground Chakkars', price: 260, offerPrice: 189, unit: 'Pack of 10', shortDescription: 'Extended-duration chakkar with a colour-changing spark trail.', keywords: ['deluxe chakkar'] },
-  { name: 'Asoka Chakkar', category: 'Ground Chakkars', price: 180, offerPrice: 135, unit: 'Pack of 10', shortDescription: 'Traditional Asoka pattern chakkar with a bright sustained spin.', keywords: ['asoka chakkar'] },
+  // One Sound Crackers
+  { name: "4\" lakshmi", category: "One Sound Crackers", price: 115, offerPrice: 23, unit: "1 pkt", keywords: ["4\" lakshmi", "one sound crackers"] },
+  { name: "5\"Jallikattu", category: "One Sound Crackers", price: 300, offerPrice: 60, unit: "1 Pkt", keywords: ["5\"jallikattu", "one sound crackers"] },
+  { name: "4\" Gold lakshmi", category: "One Sound Crackers", price: 130, offerPrice: 26, unit: "1 Pkt", keywords: ["4\" gold lakshmi", "one sound crackers"] },
+  { name: "5\" Bahubali", category: "One Sound Crackers", price: 275, offerPrice: 55, unit: "1 Pkt", keywords: ["5\" bahubali", "one sound crackers"] },
+  { name: "Bullet", category: "One Sound Crackers", price: 1000, offerPrice: 200, unit: "1 box", keywords: ["bullet", "one sound crackers"] },
+  { name: "2 3/4 Kuruvi", category: "One Sound Crackers", price: 40, offerPrice: 8, unit: "1 Pkt", keywords: ["2 3/4 kuruvi", "one sound crackers"] },
+  { name: "Money bank", category: "One Sound Crackers", price: 550, offerPrice: 110, unit: "1box", keywords: ["money bank", "one sound crackers"] },
 
   // Flower Pots
-  { name: 'Flower Pot Small', category: 'Flower Pots', price: 60, offerPrice: 44, unit: 'Pack of 10', shortDescription: 'Small anar producing a modest upward spark fountain.', keywords: ['flower pot', 'small anar'] },
-  { name: 'Flower Pot Big', category: 'Flower Pots', price: 300, offerPrice: 250, unit: 'Pack of 10', shortDescription: 'Full-size flower pot with a tall, steady fountain of sparks.', featured: true, keywords: ['flower pot big', 'big anar'] },
-  { name: 'Flower Pot Special', category: 'Flower Pots', price: 450, offerPrice: 340, unit: 'Pack of 10', shortDescription: 'Extended burn flower pot with a denser spark output.', keywords: ['flower pot special'] },
-  { name: 'Colour Koti Flower Pot', category: 'Flower Pots', price: 520, offerPrice: 399, unit: 'Pack of 10', shortDescription: 'Flower pot that shifts through several colours during its burn.', featured: true, keywords: ['colour koti', 'colour flower pot'] },
+  { name: "Flower Pots Big", category: "Flower Pots", price: 290, offerPrice: 58, unit: "1 Box", keywords: ["flower pots big", "flower pots"] },
+  { name: "Flower Pots Special", category: "Flower Pots", price: 370, offerPrice: 74, unit: "1 Box", keywords: ["flower pots special", "flower pots"] },
+  { name: "Flower Pots Ashoka", category: "Flower Pots", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["flower pots ashoka", "flower pots"] },
+  { name: "Colour Koti", category: "Flower Pots", price: 900, offerPrice: 180, unit: "1 Box", keywords: ["colour koti", "flower pots"] },
+  { name: "Tri-Colour", category: "Flower Pots", price: 1325, offerPrice: 265, unit: "1 Box", keywords: ["tri-colour", "flower pots"] },
+
+  // Ground Chakkar
+  { name: "Ground Chakkar Big", category: "Ground Chakkar", price: 150, offerPrice: 30, unit: "25 pcs", keywords: ["ground chakkar big", "ground chakkar"] },
+  { name: "Ground Chakkar Special", category: "Ground Chakkar", price: 300, offerPrice: 60, unit: "1 Box", keywords: ["ground chakkar special", "ground chakkar"] },
+  { name: "Ground Chakkar Deluxe", category: "Ground Chakkar", price: 600, offerPrice: 120, unit: "1 Box", keywords: ["ground chakkar deluxe", "ground chakkar"] },
+  { name: "Wire Chakkar", category: "Ground Chakkar", price: 900, offerPrice: 180, unit: "1 Box", keywords: ["wire chakkar", "ground chakkar"] },
+  { slug: "ground-chakkar-big-1-box", name: "Ground-chakkar-big", category: "Ground Chakkar", price: 150, offerPrice: 30, unit: "1 box", keywords: ["ground-chakkar-big", "ground chakkar"] },
+
+  // Twinkling Star
+  { name: "1 1/2 Twling star", category: "Twinkling Star", price: 150, offerPrice: 30, unit: "1 Box", keywords: ["1 1/2 twling star", "twinkling star"] },
+  { name: "4\" Twnkling Star", category: "Twinkling Star", price: 325, offerPrice: 65, unit: "1 Box", keywords: ["4\" twnkling star", "twinkling star"] },
 
   // Rockets
-  { name: 'Bottle Rocket', category: 'Rockets', price: 130, offerPrice: 95, unit: 'Pack of 10', shortDescription: 'Standard bottle rocket with a single report at the top of its climb.', keywords: ['bottle rocket', 'rocket'] },
-  { name: 'Whistling Rocket', category: 'Rockets', price: 175, offerPrice: 129, unit: 'Pack of 10', shortDescription: 'Rocket with a whistling ascent followed by a bright burst.', featured: true, keywords: ['whistling rocket'] },
-  { name: 'Colour Rocket', category: 'Rockets', price: 230, offerPrice: 169, unit: 'Pack of 10', shortDescription: 'Rocket bursting into a spread of coloured stars.', keywords: ['colour rocket'] },
-  { name: 'Rocket Combo Pack', category: 'Rockets', price: 620, offerPrice: 450, unit: 'Assorted pack', shortDescription: 'Mixed pack of bottle, whistling and colour rockets.', featured: true, keywords: ['rocket combo', 'rocket pack'] },
+  { name: "2 Sound Rocket", category: "Rockets", price: 850, offerPrice: 170, unit: "1 Box", keywords: ["2 sound rocket", "rockets"] },
+  { name: "3 Sound Rocket", category: "Rockets", price: 950, offerPrice: 190, unit: "1 Box", keywords: ["3 sound rocket", "rockets"] },
+  { name: "Whistling Rocket", category: "Rockets", price: 1100, offerPrice: 220, unit: "1 Box", keywords: ["whistling rocket", "rockets"] },
 
-  // Fancy Crackers
-  { name: 'Colour Pot Fancy', category: 'Fancy Crackers', price: 340, offerPrice: 249, unit: 'Pack of 5', shortDescription: 'Wide-mouth colour pot producing a broad, slow fountain.', keywords: ['colour pot', 'fancy'] },
-  { name: 'Silver Fountain', category: 'Fancy Crackers', price: 290, offerPrice: 215, unit: 'Pack of 5', shortDescription: 'Bright silver fountain with a tall, narrow spark column.', keywords: ['silver fountain', 'fountain'] },
-  { name: 'Peacock Fancy Fountain', category: 'Fancy Crackers', price: 560, offerPrice: 420, unit: 'Pack of 5', shortDescription: 'Fan-shaped display fountain that spreads outward as it burns.', featured: true, keywords: ['peacock fountain', 'fancy fountain'] },
-  { name: '12 Shot Multi Colour', category: 'Fancy Crackers', price: 890, offerPrice: 675, unit: 'Single unit', shortDescription: 'Twelve sequential aerial shots from a single stable base.', keywords: ['multi shot', '12 shot'] },
-  { name: '30 Shot Aerial Display', category: 'Fancy Crackers', price: 1850, offerPrice: 1420, unit: 'Single unit', shortDescription: 'Thirty-shot aerial sequence intended as a display centrepiece.', featured: true, keywords: ['30 shot', 'aerial display'] },
+  // Bijili Crackers
+  { name: "Bijili", category: "Bijili Crackers", price: 90, offerPrice: 18, unit: "1pkt", keywords: ["bijili", "bijili crackers"] },
 
-  // Gift Boxes
-  { name: 'Family Gift Box 25 Items', category: 'Gift Boxes', price: 950, offerPrice: 725, unit: '25 items', shortDescription: 'Assorted box covering sparklers, chakkars and flower pots.', featured: true, keywords: ['gift box', 'family box', '25 items'] },
-  { name: 'Premium Gift Box 50 Items', category: 'Gift Boxes', price: 2100, offerPrice: 1599, unit: '50 items', shortDescription: 'Larger assortment adding fancy fountains and rockets.', keywords: ['premium gift box', '50 items'] },
-  { name: 'Deluxe Gift Box 75 Items', category: 'Gift Boxes', price: 3400, offerPrice: 2549, unit: '75 items', shortDescription: 'Our widest assortment box, covering every category in the range.', featured: true, keywords: ['deluxe gift box', '75 items'] },
+  // Colour Smokes
+  { name: "Multi smoke", category: "Colour Smokes", price: 1000, offerPrice: 200, unit: "1 box", keywords: ["multi smoke", "colour smokes"] },
+  { name: "Sixer glod", category: "Colour Smokes", price: 750, offerPrice: 150, unit: "1box", keywords: ["sixer glod", "colour smokes"] },
+  { name: "Gold Black", category: "Colour Smokes", price: 750, offerPrice: 150, unit: "1 Box", keywords: ["gold black", "colour smokes"] },
 
-  // Kids Collection
-  { name: 'Kids Fancy Pack', category: 'Kids Collection', price: 260, offerPrice: 189, unit: 'Assorted pack', shortDescription: 'Low-noise assortment selected for younger children, for supervised use.', featured: true, keywords: ['kids pack', 'low noise'] },
-  { name: 'Snake Tablets', category: 'Kids Collection', price: 45, offerPrice: 32, unit: 'Pack of 10', shortDescription: 'Small tablets that produce an expanding ash coil with no report.', keywords: ['snake tablets', 'kids'] },
-  { name: 'Colour Smoke Sticks', category: 'Kids Collection', price: 120, offerPrice: 88, unit: 'Pack of 10', shortDescription: 'Coloured smoke sticks with no bang, suitable for daytime use.', keywords: ['smoke sticks', 'colour smoke'] },
-  { name: 'Pop Pop Crackers', category: 'Kids Collection', price: 35, offerPrice: 25, unit: 'Box of 50', shortDescription: 'Throw-down poppers with a very light snap.', keywords: ['pop pop', 'poppers'] },
+  // Kids Special
+  { name: "Hot Cone", category: "Kids Special", price: 1050, offerPrice: 210, unit: "1 Pkt", keywords: ["hot cone", "kids special"] },
+  { name: "Mobile Fountain", category: "Kids Special", price: 1100, offerPrice: 220, unit: "1 Pcs", keywords: ["mobile fountain", "kids special"] },
+  { name: "Helecopter", category: "Kids Special", price: 430, offerPrice: 86, unit: "1 Box", keywords: ["helecopter", "kids special"] },
+  { name: "Lollipop", category: "Kids Special", price: 850, offerPrice: 170, unit: "1 box", keywords: ["lollipop", "kids special"] },
+  { name: "Shotter gun", category: "Kids Special", price: 1000, offerPrice: 200, unit: "1 box", keywords: ["shotter gun", "kids special"] },
+  { name: "Free fire 5G gun", category: "Kids Special", price: 1200, offerPrice: 240, unit: "1 box", keywords: ["free fire 5g gun", "kids special"] },
+  { name: "MRF ( bat ball )", category: "Kids Special", price: 1250, offerPrice: 250, unit: "1 pkt", keywords: ["mrf ( bat ball )", "kids special"] },
+  { name: "Selfie Stick", category: "Kids Special", price: 650, offerPrice: 130, unit: "1 box", keywords: ["selfie stick", "kids special"] },
+  { name: "Photo flash", category: "Kids Special", price: 350, offerPrice: 70, unit: "1box", keywords: ["photo flash", "kids special"] },
+  { name: "Appu fountan", category: "Kids Special", price: 1150, offerPrice: 230, unit: "1 box", keywords: ["appu fountan", "kids special"] },
+  { name: "Pinaki", category: "Kids Special", price: 650, offerPrice: 130, unit: "1 box", keywords: ["pinaki", "kids special"] },
+  { name: "90s kids", category: "Kids Special", price: 750, offerPrice: 150, unit: "1 box", keywords: ["90s kids", "kids special"] },
+  { name: "Butterfly", category: "Kids Special", price: 350, offerPrice: 70, unit: "1 box", keywords: ["butterfly", "kids special"] },
+  { name: "Bambaram", category: "Kids Special", price: 550, offerPrice: 110, unit: "1box", keywords: ["bambaram", "kids special"] },
+  { name: "Siren", category: "Kids Special", price: 900, offerPrice: 180, unit: "3pcs", keywords: ["siren", "kids special"] },
+  { name: "Cylinder Bomb", category: "Kids Special", price: 1400, offerPrice: 280, unit: "2pcs", keywords: ["cylinder bomb", "kids special"] },
+  { name: "Kulfie", category: "Kids Special", price: 1600, offerPrice: 320, unit: "1 Box", keywords: ["kulfie", "kids special"] },
+  { name: "EMU Egg", category: "Kids Special", price: 1600, offerPrice: 320, unit: "1 Box", keywords: ["emu egg", "kids special"] },
+  { name: "Avengers", category: "Kids Special", price: 2400, offerPrice: 480, unit: "1 Box", keywords: ["avengers", "kids special"] },
+  { name: "Mottu Pattlu", category: "Kids Special", price: 1200, offerPrice: 240, unit: "1 Box", keywords: ["mottu pattlu", "kids special"] },
+  { name: "H20 Gun", category: "Kids Special", price: 700, offerPrice: 140, unit: "1 Box", keywords: ["h20 gun", "kids special"] },
+  { name: "Zhu Zhu", category: "Kids Special", price: 750, offerPrice: 150, unit: "1 Box", keywords: ["zhu zhu", "kids special"] },
+  { name: "shinchan", category: "Kids Special", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["shinchan", "kids special"] },
+  { name: "Watermelon", category: "Kids Special", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["watermelon", "kids special"] },
+  { slug: "cylinder-bomb-1-pcs", name: "Cylinder Bomb", category: "Kids Special", price: 650, offerPrice: 130, unit: "1 Pcs", keywords: ["cylinder bomb", "kids special"] },
+  { name: "Siren small", category: "Kids Special", price: 750, offerPrice: 150, unit: "5 pcs", keywords: ["siren small", "kids special"] },
+  { name: "Motu patlu", category: "Kids Special", price: 1050, offerPrice: 210, unit: "1 Box", keywords: ["motu patlu", "kids special"] },
+  { name: "Thar car", category: "Kids Special", price: 950, offerPrice: 190, unit: "1 box", keywords: ["thar car", "kids special"] },
+  { name: "5D GLASSES", category: "Kids Special", price: 495, offerPrice: 99, unit: "3 pcs", keywords: ["5d glasses", "kids special"] },
+  { name: "Chocolate", category: "Kids Special", price: 495, offerPrice: 99, unit: "2pcs", keywords: ["chocolate", "kids special"] },
+  { name: "Tin", category: "Kids Special", price: 400, offerPrice: 80, unit: "1 Box", keywords: ["tin", "kids special"] },
+  { name: "Beer bottle", category: "Kids Special", price: 1500, offerPrice: 300, unit: "1box", keywords: ["beer bottle", "kids special"] },
+  { name: "parachute", category: "Kids Special", price: 200, offerPrice: 40, unit: "1", keywords: ["parachute", "kids special"] },
+  { slug: "parachute-1pcs", name: "Parachute", category: "Kids Special", price: 200, offerPrice: 40, unit: "1pcs", keywords: ["parachute", "kids special"] },
+  { name: "Drone", category: "Kids Special", price: 700, offerPrice: 140, unit: "1box", keywords: ["drone", "kids special"] },
 
-  // Combo Packs
-  { name: 'Value Combo Pack', category: 'Combo Packs', price: 1450, offerPrice: 1099, unit: 'Assorted pack', shortDescription: 'Balanced mix covering an evening of celebration for a small family.', featured: true, keywords: ['value combo', 'combo pack'] },
-  { name: 'Festival Combo Pack', category: 'Combo Packs', price: 2800, offerPrice: 2150, unit: 'Assorted pack', shortDescription: 'Larger combo with a stronger share of fancy and aerial items.', keywords: ['festival combo'] },
-  { name: 'Mega Family Combo', category: 'Combo Packs', price: 4900, offerPrice: 3699, unit: 'Assorted pack', shortDescription: 'Our largest combo, intended for a full evening group celebration.', featured: true, keywords: ['mega combo', 'family combo'] },
+  // Bomb Special
+  { name: "Digital Bomb", category: "Bomb Special", price: 1400, offerPrice: 280, unit: "1 Box", keywords: ["digital bomb", "bomb special"] },
+  { name: "Classic Bomb", category: "Bomb Special", price: 650, offerPrice: 130, unit: "1 Box", keywords: ["classic bomb", "bomb special"] },
+  { name: "King of King", category: "Bomb Special", price: 550, offerPrice: 110, unit: "1 Box", keywords: ["king of king", "bomb special"] },
+  { name: "Hydro Bomb", category: "Bomb Special", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["hydro bomb", "bomb special"] },
+
+  // Fancy Novelties
+  { name: "7'Shot", category: "Fancy Novelties", price: 650, offerPrice: 130, unit: "1 Box", keywords: ["7'shot", "fancy novelties"] },
+  { name: "Magic Sound", category: "Fancy Novelties", price: 800, offerPrice: 160, unit: "1 Box", keywords: ["magic sound", "fancy novelties"] },
+  { name: "2\" Fancy", category: "Fancy Novelties", price: 350, offerPrice: 70, unit: "1 Pcs", keywords: ["2\" fancy", "fancy novelties"] },
+  { slug: "2-fancy-3-pcs", name: "2\" Fancy", category: "Fancy Novelties", price: 1100, offerPrice: 220, unit: "3 Pcs", keywords: ["2\" fancy", "fancy novelties"] },
+  { name: "Penta magic", category: "Fancy Novelties", price: 850, offerPrice: 170, unit: "1 Box", keywords: ["penta magic", "fancy novelties"] },
+  { name: "Black Money", category: "Fancy Novelties", price: 1000, offerPrice: 200, unit: "2 pcs", keywords: ["black money", "fancy novelties"] },
+  { name: "Black Buster", category: "Fancy Novelties", price: 750, offerPrice: 150, unit: "1 Box", keywords: ["black buster", "fancy novelties"] },
+  { name: "25 Shot", category: "Fancy Novelties", price: 1150, offerPrice: 230, unit: "1 Box", keywords: ["25 shot", "fancy novelties"] },
+  { name: "30 Shot", category: "Fancy Novelties", price: 2000, offerPrice: 400, unit: "1box", keywords: ["30 shot", "fancy novelties"] },
+  { name: "60 Shot", category: "Fancy Novelties", price: 3995, offerPrice: 799, unit: "1box", keywords: ["60 shot", "fancy novelties"] },
+  { name: "120 Shot", category: "Fancy Novelties", price: 10995, offerPrice: 2199, unit: "1box", keywords: ["120 shot", "fancy novelties"] },
+  { name: "3 in 1 Fancy", category: "Fancy Novelties", price: 1200, offerPrice: 240, unit: "1pcs", keywords: ["3 in 1 fancy", "fancy novelties"] },
+  { name: "3 Fancy", category: "Fancy Novelties", price: 1150, offerPrice: 230, unit: "1 Pcs", keywords: ["3 fancy", "fancy novelties"] },
+  { name: "4 Fancy", category: "Fancy Novelties", price: 1750, offerPrice: 350, unit: "1 Pcs", keywords: ["4 fancy", "fancy novelties"] },
+  { name: "12 Shot", category: "Fancy Novelties", price: 750, offerPrice: 150, unit: "1 Box", keywords: ["12 shot", "fancy novelties"] },
+  { name: "4 Fancy Nygra", category: "Fancy Novelties", price: 1750, offerPrice: 350, unit: "1 Box", keywords: ["4 fancy nygra", "fancy novelties"] },
+  { name: "Chotta fancy", category: "Fancy Novelties", price: 190, offerPrice: 38, unit: "1pcs", keywords: ["chotta fancy", "fancy novelties"] },
+  { name: "240 shot", category: "Fancy Novelties", price: 15500, offerPrice: 3100, unit: "1box", keywords: ["240 shot", "fancy novelties"] },
+  { name: "Purple rain", category: "Fancy Novelties", price: 11000, offerPrice: 2200, unit: "1 box", keywords: ["purple rain", "fancy novelties"] },
+  { name: "Snake eye", category: "Fancy Novelties", price: 15000, offerPrice: 3000, unit: "1 box", keywords: ["snake eye", "fancy novelties"] },
+  { name: "10x10 welcome shot", category: "Fancy Novelties", price: 20000, offerPrice: 4000, unit: "1 Box", keywords: ["10x10 welcome shot", "fancy novelties"] },
+
+  // Paper Bomb
+  { name: "1/4 Kg", category: "Paper Bomb", price: 250, offerPrice: 50, unit: "1 Box", keywords: ["1/4 kg", "paper bomb"] },
+  { name: "1/2 Kg", category: "Paper Bomb", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["1/2 kg", "paper bomb"] },
+  { name: "1 Kg", category: "Paper Bomb", price: 900, offerPrice: 180, unit: "1 Box", keywords: ["1 kg", "paper bomb"] },
+  { name: "Avatar", category: "Paper Bomb", price: 1700, offerPrice: 340, unit: "10pcs", keywords: ["avatar", "paper bomb"] },
+  { name: "Rider", category: "Paper Bomb", price: 450, offerPrice: 90, unit: "5 pcs", keywords: ["rider", "paper bomb"] },
+  { name: "Once More", category: "Paper Bomb", price: 500, offerPrice: 100, unit: "1 Box", keywords: ["once more", "paper bomb"] },
+
+  // Fountain
+  { name: "Gold laddu", category: "Fountain", price: 1825, offerPrice: 365, unit: "1box", keywords: ["gold laddu", "fountain"] },
+  { name: "Silver laddu", category: "Fountain", price: 2250, offerPrice: 450, unit: "5pcs", keywords: ["silver laddu", "fountain"] },
+  { name: "Peacock", category: "Fountain", price: 750, offerPrice: 150, unit: "1pcs", keywords: ["peacock", "fountain"] },
+  { name: "Bada Peacock", category: "Fountain", price: 2000, offerPrice: 400, unit: "1pcs", keywords: ["bada peacock", "fountain"] },
+  { name: "Korean Fir X-mas tree", category: "Fountain", price: 1300, offerPrice: 260, unit: "1 Box", keywords: ["korean fir x-mas tree", "fountain"] },
+  { name: "VEL", category: "Fountain", price: 1250, offerPrice: 250, unit: "1 Box", keywords: ["vel", "fountain"] },
+  { name: "Singing Pop", category: "Fountain", price: 650, offerPrice: 130, unit: "1 Box", keywords: ["singing pop", "fountain"] },
+  { name: "Golden Peacock", category: "Fountain", price: 750, offerPrice: 150, unit: "1box", keywords: ["golden peacock", "fountain"] },
+  { name: "20 Twenty", category: "Fountain", price: 700, offerPrice: 140, unit: "1 Box", keywords: ["20 twenty", "fountain"] },
+  { name: "Peacock Feather", category: "Fountain", price: 500, offerPrice: 100, unit: "1box", keywords: ["peacock feather", "fountain"] },
+  { name: "Golden Rain", category: "Fountain", price: 500, offerPrice: 100, unit: "1box", keywords: ["golden rain", "fountain"] },
+  { name: "Golden Star", category: "Fountain", price: 500, offerPrice: 100, unit: "1box", keywords: ["golden star", "fountain"] },
+  { name: "Silver Drops", category: "Fountain", price: 500, offerPrice: 100, unit: "1box", keywords: ["silver drops", "fountain"] },
+  { name: "Touch and Touch", category: "Fountain", price: 500, offerPrice: 100, unit: "1 box", keywords: ["touch and touch", "fountain"] },
+  { name: "King versions", category: "Fountain", price: 1000, offerPrice: 200, unit: "1 box", keywords: ["king versions", "fountain"] },
+  { name: "Ganga jamuna", category: "Fountain", price: 450, offerPrice: 90, unit: "1 Box", keywords: ["ganga jamuna", "fountain"] },
+
+  // Lars
+  { name: "1k wala", category: "Lars", price: 1000, offerPrice: 200, unit: "1 Box", keywords: ["1k wala", "lars"] },
+  { name: "2k wala", category: "Lars", price: 2000, offerPrice: 400, unit: "1 Box", keywords: ["2k wala", "lars"] },
+  { name: "5k wala", category: "Lars", price: 4000, offerPrice: 800, unit: "1 Box", keywords: ["5k wala", "lars"] },
+  { name: "10k wala", category: "Lars", price: 8000, offerPrice: 1600, unit: "1 Box", keywords: ["10k wala", "lars"] },
 ];
 
+/**
+ * Only states what the price list actually says - the item, its category and
+ * its pack size - followed by the standard handling note. Nothing describes
+ * an effect, burn time or colour, because the sheet records none and a seed
+ * file is the wrong place to invent product claims.
+ */
 function buildDescription(product, categoryName) {
+  const blurb = product.shortDescription?.trim();
+
   return (
     `${product.name} is part of our ${categoryName.toLowerCase()} range` +
     `${product.unit ? `, supplied as ${product.unit.toLowerCase()}` : ''}. ` +
-    `${product.shortDescription} ` +
+    `${blurb ? `${blurb} ` : ''}` +
     'Store in a cool, dry place away from heat and direct sunlight. ' +
     'Use only in a suitable open area, follow the instructions printed on the pack, ' +
     'and keep water or sand within reach. Purchase and use only where local law permits.'
@@ -170,7 +326,11 @@ async function seedProducts(categoryMap) {
       continue;
     }
 
-    const slug = slugify(entry.name);
+    // The price list carries a few items whose names are identical or differ
+    // only by case, so an explicit slug distinguishes them. Without it the
+    // second one collides and is skipped as "already present", silently
+    // dropping a real product from the catalogue.
+    const slug = entry.slug ?? slugify(entry.name);
     if (await Product.exists({ slug })) {
       skipped += 1;
       continue;
